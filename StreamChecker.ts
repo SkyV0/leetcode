@@ -32,6 +32,11 @@
 // streamChecker.query("l"); // return True, because 'kl' is in the wordlist
  
 
+/**
+ * Your StreamChecker object will be instantiated and called as such:
+ * var obj = new StreamChecker(words)
+ * var param_1 = obj.query(letter)
+ */
 // Constraints:
 
 // 1 <= words.length <= 2000
@@ -41,16 +46,21 @@
 // At most 4 * 104 calls will be made to query.
 class StreamChecker {
     constructor(words: string[]) {
-        
+        this.words = words;
+        this.trie = new Trie();
+        for (let word of words) {
+            this.trie.insert(word);
+        }
     }
 
     query(letter: string): boolean {
-
+        this.letters += letter;
+        return this.trie.search(this.letters);
     }
+
+    private words: string[];
+    private trie: Trie;
+    private letters: string = '';
 }
 
-/**
- * Your StreamChecker object will be instantiated and called as such:
- * var obj = new StreamChecker(words)
- * var param_1 = obj.query(letter)
- */
+class Tri   
