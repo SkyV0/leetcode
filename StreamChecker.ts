@@ -46,21 +46,44 @@
 // At most 4 * 104 calls will be made to query.
 class StreamChecker {
     constructor(words: string[]) {
+        // let map = {};
+        // for (let word of words) {
+        //     let node = map;
+        //     for (let i = word.length - 1; i >= 0; i--) {
+        //         if (!node[word[i]]) node[word[i]] = {};
+        //         node = node[word[i]];
+        //     }
+        //     node['$'] = true;
+        // }
         this.words = words;
-        this.trie = new Trie();
+            
+        this.map = {};
+        
         for (let word of words) {
-            this.trie.insert(word);
+            let lastChar = word[word.length - 1];
+            if (this.map[lastChar]) {
+                this.map[lastChar].push(word);
+            } else {
+                this.map[lastChar] = [word];
+            }
         }
+        this.stream = [];
     }
-
+    words: string[];
+    map: { [key: string]: string[] };
+    stream: string[];
     query(letter: string): boolean {
-        this.letters += letter;
-        return this.trie.search(this.letters);
+        this.stream.push(letter);
+        if (this.map[letter]) {
+            for (let word of this.map[letter]) {
+                if (this.stream.slice(-word.length).join("") === word) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-
-    private words: string[];
-    private trie: Trie;
-    private letters: string = '';
 }
 
-class Tri   
+
+
